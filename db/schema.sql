@@ -1,0 +1,1 @@
+-- CREATE TABLE `python-api`.`tblUser` (`UserId` INT NOT NULL AUTO_INCREMENT, `UserName` VARCHAR(45) NULL, `Password` VARCHAR(45) NULL, PRIMARY KEY (`UserId`));
