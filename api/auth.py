@@ -26,11 +26,16 @@ class Login(Resource):
     @staticmethod
     def __get_user_id(username, password):
         cursor = Database.connection.cursor()
-        query = ("SELECT UserId from users where "
-                 "Username='{0}' and "
-                 "Password='{1}'").format(username, password)
+        query = ("SELECT id from users where "
+                 "username='{0}' and "
+                 "password='{1}'").format(username, password)
         cursor.execute(query)
-        return cursor.fetchone()[0]
+        data = cursor.fetchone()
+
+        if data:
+            return data[0]
+
+        return None
 
 
 class Logout(Resource):

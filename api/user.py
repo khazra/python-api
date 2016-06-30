@@ -7,8 +7,8 @@ class User(Resource):
     def get(id):
         try:
             cursor = Database.connection.cursor()
-            query = ("SELECT UserName from users "
-                     "where UserId='{0}'").format(id)
+            query = ("SELECT username from users "
+                     "where id='{0}'").format(id)
             cursor.execute(query)
             return cursor.fetchone()
 
