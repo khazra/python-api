@@ -3,12 +3,12 @@ from functools import wraps
 
 
 class Auth():
-    @classmethod
-    def _check_auth(self, authorization_token):
+    @staticmethod
+    def _check_auth(authorization_token):
         return authorization_token == 'token'
 
-    @classmethod
-    def _authenticate(self):
+    @staticmethod
+    def _authenticate():
         return Response('Not authorized', 401)
 
     @classmethod
