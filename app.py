@@ -1,4 +1,5 @@
-import logging
+import os
+
 from flask import Flask
 from flask_restful import Api
 from api.user import User
@@ -10,19 +11,9 @@ from itsdangerous import TimestampSigner
 app = Flask(__name__)
 api = Api(app)
 
-app.config.update(
-    MYSQL_DATABASE_USER='root',
-    MYSQL_DATABASE_PASSWORD='',
-    MYSQL_DATABASE_DB='python_api',
-    MYSQL_DATABASE_HOST='127.0.0.1',
-
-    SECRET_KEY='very scary secret key',
-    TOKEN_RANDOM_STRING_LENGTH=16,
-    TOKEN_VALIDITY_DURATION=3600,
-
-    DEBUG=True,
-    LOG_LEVEL=logging.INFO
-)
+app_settings = os.getenv(
+    'APP_SETTINGS', 'config.Development')
+app.config.from_object(app_settings)
 
 Database.connect(app)
 app.signer = TimestampSigner(app.config['SECRET_KEY'])
@@ -31,7 +22,12 @@ api.add_resource(Login, '/login')
 api.add_resource(User, '/user/<int:id>')
 
 if __name__ == '__main__':
-    handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
-    handler.setLevel(app.config['LOG_LEVEL'])
-    app.logger.addHandler(handler)
+    log_handler = RotatingFileHandler(
+        app.config['LOGFILE_NAME'],
+        maxBytes=app.config['LOGFILE_MAX_BYTES'],
+        backupCount=app.config['LOGFILE_BACKUP_COUNT']
+    )
+    log_handler.setLevel(app.config['LOG_LEVEL'])
+    app.logger.addHandler(log_handler)
+
     app.run(debug=app.config['DEBUG'])
