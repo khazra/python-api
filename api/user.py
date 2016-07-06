@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from flask import current_app as app
+from flask import current_app as app, Response
 
 from utils.database import Database
 from utils.auth import Auth
@@ -18,3 +18,4 @@ class User(Resource):
 
         except Exception as e:
             app.logger.error('ERROR: Exception raised: %s', str(e))
+            return Response('Unknown error', 520)
