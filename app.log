@@ -1,0 +1,60 @@
+<Response 31 bytes [401 UNAUTHORIZED]>
+Info Signature 'None' does not match
+Info Signature 'None' does not match
+INFO: Signature 'None' does not match
+INFO: Signature 'UMPsDBj-om8xeKpF6MkJOkMxA8I' does not match
+INFO: timestamp missing
+INFO: timestamp missing
+INFO: timestamp missing
+INFO: Signature 'OTSihEMTVo5v8NV_RZpa5OTtEVM' does not match
+INFO: timestamp missing
+INFO: 173961268
+INFO: 173961321
+INFO: Signature 'I7N3Ys1x9efceyd_9sBEL0VkdDI' does not match
+INFO: timestamp missing
+INFO: Signature '3cTrBUBjAo5MzhGFtY-K9u6hvUo' does not match
+INFO: timestamp missing
+INFO: Signature 'Xmy6K2cXYmHqEKTF6nG-PSDNmf8' does not match
+INFO: timestamp missing
+INFO: Signature 'UbyI__K0HbzArnIm2v4eyW2Brf4' does not match
+INFO: timestamp missing
+INFO: 173962530
+INFO: 173962550
+INFO: Signature 'VeLRrP7RAkdgxuZpg6DjmXVNiJ8' does not match
+INFO: 173962553
+INFO: Signature 'VeLRrP7RAkdgxuZpg6DjmXVNiJ8' does not match
+INFO: 173962567
+INFO: timestamp missing
+INFO: eRGqadMPNPtCRQfc.Cl52lA.Mh-CfTio2jFu9Z3aEmuYlOmyGnE
+INFO: Signed value: agHDhSJKCdTuknqV.Cl53Jg.nYQBOs3K5JZzLR5puxm27m2c0FE
+INFO: Signature: 4j07Jp6c69NMoalcJvtixHwEE-M
+INFO: Signature timestamp: 173963046
+INFO: Signed value: yqUIVqDxqWspxwhW.Cl53kw.L9iGzctCdR0Y5YLnVzy_gkqnONM
+INFO: Signature: FGUldNaQsgY7b18QFSnltLHTQGA
+INFO: Signature timestamp: 173963155
+INFO: Signature 'L9iGzctCdR0Y5YLnVzy_gkqnON' does not match
+INFO: Signed value: tUoleKkoqiOpjTZp.Cl53xg.NY1XENF_N134nRWSuBTHdj__bLQ
+INFO: Signature: 3zI2f9B6rLgLgHlHgRg-q5KB1UI
+INFO: Signature timestamp: 173963206
+INFO: Signature age 31 > 30 seconds
+INFO: Signature age 33 > 30 seconds
+INFO: Signed value: YMkNlIvjQFdxotuC.Cl54ZQ.QYtabtYWEj-17qN4stVMrhCBpXs
+INFO: Signature: rSJi4jm29o0lznqTBElF7JRNz14
+INFO: Signature timestamp: 173963365
+INFO: Signed value: dsxduewgUSpOzRLa.Cl54hQ.EXAMckFQpzfokJaUofrVPgUaWiQ
+INFO: Signature: nlm_sMjUWV-wk25CbSAU_-hLUvs
+INFO: Signature timestamp: 173963397
+INFO: Signature 'EXAMckFQpzfokJaUofrVPgUaWi' does not match
+INFO: Signature 'EXAMckFQpzfokJaUofrVPgUaWif' does not match
+INFO: Signed value: iTtOkLHswPJZVaGD.Cl55uw.3G1HzG5kyUP9g8H1YrDWGLee7XU
+INFO: Signature: PioEIli66sJWX3TKNBEV5bF2usM
+INFO: Signature timestamp: 173963707
+INFO: Signature '3G1HzG5kyUP9g8H1YrDWGLee7X' does not match
+INFO: Authorized with token YByDUMyCxfPzokfL.Cl56kw.REyo6-AV7IXE-IVVcm-fUCFtK3c
+INFO: Signature: TI-WQHWwf1Tl9YL4k8nS31Kpw7U
+INFO: No '.' found in value
+INFO: Authorized with token xQoFPyaSUFEmzCgi.Cl560A.dMqYFcwjgxF5T0khRQ1stEVQWnI
+INFO: Authorized with token PIBAZFuvHyeBjuaJ.Cl561A.R6Pq2YEHkmf4RljJFrVUYwLoceA
+INFO: Authorized with token cNeVJMkFxadEechK.Cl561Q.ufVr-qTqRTUoBGvZhne6gqLA26s
+INFO: Signature age 187 > 60 seconds
+INFO: <itsdangerous.TimestampSigner object at 0x00000000044175C0>

@@ -1,9 +1,11 @@
 from flask_restful import Resource
 from utils.database import Database
+from utils.auth import Auth
 
 
 class User(Resource):
     @staticmethod
+    @Auth.requires_login
     def get(id):
         try:
             cursor = Database.connection.cursor()
@@ -13,6 +15,4 @@ class User(Resource):
             return cursor.fetchone()
 
         except Exception as e:
-            return {
-                'error': str(e)
-            }
+            return ('Exception raised: {0}').format(str(e))
