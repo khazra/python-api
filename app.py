@@ -5,6 +5,7 @@ from api.user import User
 from api.auth import Login
 from utils.database import Database
 from logging.handlers import RotatingFileHandler
+from itsdangerous import TimestampSigner
 
 app = Flask(__name__)
 api = Api(app)
@@ -24,6 +25,7 @@ app.config.update(
 )
 
 Database.connect(app)
+app.signer = TimestampSigner(app.config['SECRET_KEY'])
 
 api.add_resource(Login, '/login')
 api.add_resource(User, '/user/<int:id>')

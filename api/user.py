@@ -1,4 +1,6 @@
 from flask_restful import Resource
+from flask import current_app as app
+
 from utils.database import Database
 from utils.auth import Auth
 
@@ -15,4 +17,4 @@ class User(Resource):
             return cursor.fetchone()
 
         except Exception as e:
-            return ('Exception raised: {0}').format(str(e))
+            app.logger.error('ERROR: Exception raised: %s', str(e))
