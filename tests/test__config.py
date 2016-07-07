@@ -1,7 +1,7 @@
 import unittest
 import logging
 
-from app import app
+from src import app
 
 from flask import current_app
 from flask_testing import TestCase
@@ -9,7 +9,7 @@ from flask_testing import TestCase
 
 class TestDevelopmentConfig(TestCase):
     def create_app(self):
-        app.config.from_object('config.Development')
+        app.config.from_object('src.config.Development')
         return app
 
     def test_app_is_development(self):
@@ -20,7 +20,7 @@ class TestDevelopmentConfig(TestCase):
 
 class TestProductionConfig(TestCase):
     def create_app(self):
-        app.config.from_object('config.Production')
+        app.config.from_object('src.config.Production')
         return app
 
     def test_app_is_production(self):

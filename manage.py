@@ -2,7 +2,7 @@ import unittest
 import coverage
 import os
 
-from app import app
+from src import app
 
 from flask_script import Manager
 
@@ -31,7 +31,7 @@ def cov():
         data_file='.coverage',
         include=[
             'tests/*',
-            'api/*'
+            'app/api/*'
         ],
         omit='.venv/*'
     )

@@ -1,8 +1,8 @@
 from flask_restful import Resource
 from flask import current_app as app, Response
 
-from utils.database import Database
-from utils.auth import Auth
+from src.utils.database import Database
+from src.utils.auth import Auth
 
 
 class User(Resource):
