@@ -7,3 +7,7 @@ class Database:
         mysql = MySQL()
         mysql.init_app(app)
         self.connection = mysql.connect()
+
+    # initDb
+    # execute query
+    # etc

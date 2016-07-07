@@ -24,3 +24,10 @@ class Development(Base):
 class Production(Base):
     DEBUG = False
     LOG_LEVEL = logging.ERROR
+
+
+class Test(Base):
+    MYSQL_DATABASE_DB = 'python_api_test'
+    DEBUG = True
+    LOG_LEVEL = logging.INFO
+    TESTING = True
