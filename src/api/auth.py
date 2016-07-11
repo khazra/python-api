@@ -2,7 +2,6 @@ from flask import Response, request
 from flask_restful import Resource
 from flask import current_app as app
 
-from src.utils.database import Database
 from src.utils.auth import Auth
 
 
@@ -32,7 +31,7 @@ class Login(Resource):
     @staticmethod
     def __credentials_valid(username, password):
         hashed_password = Auth.hash_password(password)
-        cursor = Database.connection.cursor()
+        cursor = app.db.connection.cursor()
         query = ("SELECT id from users where "
                  "username='{0}' and "
                  "password='{1}'").format(username, hashed_password)

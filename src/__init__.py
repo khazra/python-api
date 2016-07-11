@@ -6,7 +6,7 @@ from flask_restful import Api
 from logging.handlers import RotatingFileHandler
 from itsdangerous import TimestampSigner
 
-from src.api.user import User
+from src.api.user import User, Users
 from src.api.auth import Login
 from src.utils.database import Database
 
@@ -21,7 +21,8 @@ app_settings = os.getenv(
     'APP_SETTINGS', 'src.config.Development')
 app.config.from_object(app_settings)
 
-Database.connect(app)
+# connect to db
+app.db = Database(app)
 
 # init signer for creating signed authentication tokens
 app.signer = TimestampSigner(app.config['SECRET_KEY'])
@@ -37,6 +38,7 @@ app.logger.addHandler(log_handler)
 
 # API endpoints
 api.add_resource(Login, '/login')
+api.add_resource(Users, '/user')
 api.add_resource(User, '/user/<int:id>')
 
 if __name__ == '__main__':
