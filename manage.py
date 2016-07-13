@@ -2,7 +2,7 @@ import unittest
 import coverage
 import os
 
-from src import app
+from src.app import app
 
 from flask_script import Manager
 

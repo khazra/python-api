@@ -1,14 +1,19 @@
 from flask import request, Response
-from flask import current_app as app
 
 from functools import wraps
-from itsdangerous import BadSignature, SignatureExpired
+from itsdangerous import BadSignature, SignatureExpired, TimestampSigner
 from random import choice
 from string import ascii_letters
 import hashlib
 
 
 class Auth:
+
+    @classmethod
+    def __init__(self, app):
+        self.signer = TimestampSigner(app.config['SECRET_KEY'])
+        self.app = app
+
     @classmethod
     def requires_login(self, f):
         @wraps(f)
@@ -31,27 +36,27 @@ class Auth:
     def generate_auth_token(self):
         token_random_string = ''.join(
             choice(ascii_letters) for i in range(
-                app.config['TOKEN_RANDOM_STRING_LENGTH']))
+                self.app.config['TOKEN_RANDOM_STRING_LENGTH']))
 
-        signed = app.signer.sign(token_random_string)
+        signed = self.signer.sign(token_random_string)
 
-        app.logger.info('INFO: Authorized with token %s', signed)
+        self.app.logger.info('INFO: Authorized with token %s', signed)
 
         return signed
 
     @classmethod
     def __is_token_valid(self, authentication_token):
         try:
-            app.signer.unsign(
+            self.signer.unsign(
                 authentication_token,
-                max_age=app.config['TOKEN_VALIDITY_DURATION']
+                max_age=self.app.config['TOKEN_VALIDITY_DURATION']
             )
 
         except SignatureExpired as e:
-            app.logger.info('INFO: SignatureExpired, %s', str(e))
+            self.app.logger.info('INFO: SignatureExpired, %s', str(e))
             return False    # valid token, but expired
         except BadSignature as e:
-            app.logger.info('INFO: BadSignature, %s', str(e))
+            self.app.logger.info('INFO: BadSignature, %s', str(e))
             return False    # invalid token
 
         return True

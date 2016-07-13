@@ -1,19 +1,19 @@
 from flask_restful import Resource
-from flask import current_app as app, Response, request
+from flask import Response, request
 
-from src.utils.auth import Auth
+from src import app, auth, db
 
 
 class User(Resource):
-    @staticmethod
-    @Auth.requires_login
-    def get(id=None, name=None):
-        if not id and not name:
-            return Response('Specify username or user id', 400)
 
-        with app.db.connection:
+    @staticmethod
+    @auth.requires_login
+    def get(id):
+        if not id:
+            return Response('Specify user id', 400)
+
+        with db.connection as cursor:
             try:
-                cursor = app.db.connection.cursor()
                 query = ("SELECT username from users "
                          "where id='{0}'").format(id)
                 cursor.execute(query)
@@ -25,8 +25,9 @@ class User(Resource):
 
 
 class Users(Resource):
+
     @staticmethod
-    @Auth.requires_login
+    @auth.requires_login
     def post():
         json_body = request.get_json()
 
@@ -41,7 +42,7 @@ class Users(Resource):
                 'Please provide username and password for user', 400)
 
         try:
-            app.db.create_user(username, Auth.hash_password(password))
+            db.create_user(username, auth.hash_password(password))
             return Response('User created', 201)
 
         except Exception as e:

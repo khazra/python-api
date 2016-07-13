@@ -4,11 +4,9 @@ from flask import Flask
 from flask_restful import Api
 
 from logging.handlers import RotatingFileHandler
-from itsdangerous import TimestampSigner
 
-from src.api.user import User, Users
-from src.api.auth import Login
 from src.utils.database import Database
+from src.utils.auth import Auth
 
 
 app = Flask(__name__)
@@ -22,10 +20,10 @@ app_settings = os.getenv(
 app.config.from_object(app_settings)
 
 # connect to db
-app.db = Database(app)
+db = Database(app)
 
-# init signer for creating signed authentication tokens
-app.signer = TimestampSigner(app.config['SECRET_KEY'])
+# init auth utils for generating api tokens etc.
+auth = Auth(app)
 
 # init log handler
 log_handler = RotatingFileHandler(
@@ -35,11 +33,3 @@ log_handler = RotatingFileHandler(
 )
 log_handler.setLevel(app.config['LOG_LEVEL'])
 app.logger.addHandler(log_handler)
-
-# API endpoints
-api.add_resource(Login, '/login')
-api.add_resource(Users, '/user')
-api.add_resource(User, '/user/<int:id>')
-
-if __name__ == '__main__':
-    app.run(debug=app.config['DEBUG'])

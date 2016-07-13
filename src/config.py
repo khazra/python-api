@@ -15,6 +15,9 @@ class Base(object):
     LOGFILE_MAX_BYTES = 10000
     LOGFILE_BACKUP_COUNT = 1
 
+    ADMIN_DEFAULT_PASSWD = ('8c6976e5b5410415bde908bd4dee15df'
+                            'b167a9c873fc4bb8a81f6f2ab448a918')
+
 
 class Development(Base):
     DEBUG = True
