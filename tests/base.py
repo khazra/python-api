@@ -1,7 +1,8 @@
 from flask_testing import TestCase
 
-from src import app
+from src.app import app
 from src.utils.database import Database
+from src.model.user import UserModel as user
 
 
 class BaseTestCase(TestCase):
@@ -9,6 +10,6 @@ class BaseTestCase(TestCase):
         app.config.from_object('src.config.Test')
         return app
 
-    def SetUp(self):
-        Database.connect(app)
-        # create db and populate it with data
+    def setup(self):
+        Database(app)
+        user.create('test_user1', 'test_pass')

@@ -17,6 +17,25 @@ class Base(object):
 
     ADMIN_DEFAULT_PASSWD = ('8c6976e5b5410415bde908bd4dee15df'
                             'b167a9c873fc4bb8a81f6f2ab448a918')
+    ADMIN_DEFAULT_NAME = 'admin'
+
+    DB_TABLE_SCHEMAS = {
+        'users': (
+            'id int not null auto_increment',
+            'username varchar(64) not null',
+            'password varchar(64) not null',
+            "role varchar(16) not null default 'USER'",
+            'created datetime not null default current_timestamp',
+            ('modified datetime not null default '
+             'current_timestamp on update current_timestamp'),
+            'active tinyint(2) not null default 0',
+        )
+    }
+
+    USER_ROLES = {
+        'admin': 'ADMIN',
+        'user': 'USER'
+    }
 
 
 class Development(Base):

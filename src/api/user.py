@@ -34,7 +34,7 @@ class Users(Resource):
         json_body = request.get_json()
 
         if not json_body:
-            return Response('Content type must be application/json', 400)
+            return Response('Bad content type', 400)
 
         username = json_body.get('email')
         password = json_body.get('password')

@@ -15,18 +15,20 @@ class Database:
 
     @classmethod
     def __populate(self):
-        self.__create_table('users')
+        self.__create_table('users', self.config['DB_TABLE_SCHEMAS']['users'])
         self.__create_admin_user()
 
     @classmethod
-    def __create_table(self, table_name):
+    def __create_table(self, table_name, schema):
         with self.connection as cursor:
             try:
-                query = 'use {db_name};'
-                query = 'create table if not exists {table_name}('
-                query += 'id int not null auto_increment,'
-                query += 'username varchar(64) not null,'
-                query += 'password varchar(64) not null,'
+                query = 'create table if not exists {db_name}.{table_name}('
+
+                for column_props in schema:
+                    query += ('{column_props},').format(
+                        column_props=column_props
+                    )
+
                 query += 'primary key (id));'
 
                 cursor.execute(query.format(
@@ -44,13 +46,16 @@ class Database:
             try:
                 query = 'replace into {db_name}.users '
                 query += 'set id = 1, '
-                query += "username = '{user_name}', "
-                query += "password = '{user_passwd}';"
+                query += "username = '{user_name}',"
+                query += "password = '{user_passwd}',"
+                query += "role = '{user_role}',"
+                query += 'active = 1;'
 
                 cursor.execute(query.format(
                     db_name=self.config['MYSQL_DATABASE_DB'],
-                    user_name='admin',
-                    user_passwd=self.config['ADMIN_DEFAULT_PASSWD']
+                    user_name=self.config['ADMIN_DEFAULT_NAME'],
+                    user_passwd=self.config['ADMIN_DEFAULT_PASSWD'],
+                    user_role=self.config['USER_ROLES']['admin']
                 ))
 
             except Exception as e:
