@@ -1,7 +1,8 @@
 from flask_restful import Resource
 from flask import Response, request
 
-from src import app, auth, db
+from src import app, auth
+from src.model.user import UserModel as user
 
 
 class User(Resource):
@@ -12,16 +13,17 @@ class User(Resource):
         if not id:
             return Response('Specify user id', 400)
 
-        with db.connection as cursor:
-            try:
-                query = ("SELECT username from users "
-                         "where id='{0}'").format(id)
-                cursor.execute(query)
-                return cursor.fetchone()
+        username = user.get_username_by_id(id)
 
-            except Exception as e:
-                app.logger.error('ERROR: Exception raised: %s', str(e))
-                return Response('Unknown error', 520)
+        try:
+            if username is not None:
+                return Response('User found', 200, {'username': username})
+            else:
+                return Response('User not found', 404)
+
+        except Exception as e:
+            app.logger.error('ERROR: Exception raised: %s', str(e))
+            return Response('Unknown error', 520)
 
 
 class Users(Resource):
@@ -42,7 +44,11 @@ class Users(Resource):
                 'Please provide username and password for user', 400)
 
         try:
-            db.create_user(username, auth.hash_password(password))
+            if user.get_user_id_by_name(username) is not None:
+                app.logger.info('INFO: User already exists: %s', username)
+                return Response('User already exists', 423)
+
+            user.create(username, auth.hash_password(password))
             return Response('User created', 201)
 
         except Exception as e:

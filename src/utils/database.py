@@ -19,24 +19,6 @@ class Database:
         self.__create_admin_user()
 
     @classmethod
-    def create_user(self, name, passwd):
-        with self.connection as cursor:
-            try:
-                query = 'insert into {db_name}.users(username, password)'
-                query += " values('{user_name}', "
-                query += "'{user_passwd}');"
-
-                cursor.execute(query.format(
-                    db_name=self.config['MYSQL_DATABASE_DB'],
-                    user_name=name,
-                    user_passwd=passwd
-                ))
-
-            except Exception as e:
-                self.logger.error('ERROR: Exception raised: %s', str(e))
-                return Response('Unknown error', 520)
-
-    @classmethod
     def __create_table(self, table_name):
         with self.connection as cursor:
             try:
@@ -58,4 +40,19 @@ class Database:
 
     @classmethod
     def __create_admin_user(self):
-        self.create_user('admin', self.config['ADMIN_DEFAULT_PASSWD'])
+        with self.connection as cursor:
+            try:
+                query = 'replace into {db_name}.users '
+                query += 'set id = 1, '
+                query += "username = '{user_name}', "
+                query += "password = '{user_passwd}';"
+
+                cursor.execute(query.format(
+                    db_name=self.config['MYSQL_DATABASE_DB'],
+                    user_name='admin',
+                    user_passwd=self.config['ADMIN_DEFAULT_PASSWD']
+                ))
+
+            except Exception as e:
+                self.logger.error('ERROR: Exception raised: %s', str(e))
+                return Response('Unknown error', 520)
