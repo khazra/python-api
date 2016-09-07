@@ -7,7 +7,7 @@ class Base(object):
     MYSQL_DATABASE_DB = 'python_api'
     MYSQL_DATABASE_HOST = '127.0.0.1'
 
-    SECRET_KEY = 'very scary secret key'
+    SECRET_KEY = 'replace this to something more appriopriate :)'
     TOKEN_RANDOM_STRING_LENGTH = 16
     TOKEN_VALIDITY_DURATION = 3600
 

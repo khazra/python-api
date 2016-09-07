@@ -1,7 +1,8 @@
 from flask import Response, request
 from flask_restful import Resource
 
-from src import app, auth, db
+from src import app, auth
+from src.model.user import UserModel as user
 
 
 class Login(Resource):
@@ -32,14 +33,9 @@ class Login(Resource):
     def __credentials_valid(username, password):
         hashed_password = auth.hash_password(password)
 
-        with db.connection as cursor:
-            query = ("SELECT id from users where "
-                     "username='{0}' and "
-                     "password='{1}'").format(username, hashed_password)
-            cursor.execute(query)
-            data = cursor.fetchone()
+        data = user.get_user_id_by_name_and_password(username, hashed_password)
 
-        if data:
+        if data is not None:
             return True
 
         return False

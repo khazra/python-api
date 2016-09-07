@@ -1,4 +1,3 @@
-from flask import Response
 from flaskext.mysql import MySQL
 
 
@@ -22,23 +21,21 @@ class Database:
     def __create_table(self, table_name, schema):
         with self.connection as cursor:
             try:
-                query = 'create table if not exists {db_name}.{table_name}('
+                if not self.__table_exists(table_name):
+                    query = 'create table {db_name}.{table_name}('
 
-                for column_props in schema:
-                    query += ('{column_props},').format(
-                        column_props=column_props
-                    )
+                    for column_props in schema:
+                        query += ('{0},').format(column_props)
 
-                query += 'primary key (id));'
+                    query += 'primary key (id));'
 
-                cursor.execute(query.format(
-                    db_name=self.config['MYSQL_DATABASE_DB'],
-                    table_name=table_name
-                ))
+                    cursor.execute(query.format(
+                        db_name=self.config['MYSQL_DATABASE_DB'],
+                        table_name=table_name
+                    ))
 
             except Exception as e:
-                self.logger.error('ERROR: Exception raised: %s', str(e))
-                return Response('Unknown error', 520)
+                self.logger.error('ERROR: Executing query failed: %s', str(e))
 
     @classmethod
     def __create_admin_user(self):
@@ -59,5 +56,17 @@ class Database:
                 ))
 
             except Exception as e:
-                self.logger.error('ERROR: Exception raised: %s', str(e))
-                return Response('Unknown error', 520)
+                self.logger.error('ERROR: Executing query failed: %s', str(e))
+
+    @classmethod
+    def __table_exists(self, table_name):
+        with self.connection as cursor:
+            query = ('select * from information_schema.tables '
+                     "where table_schema = '{db_name}' "
+                     "and table_name = '{table_name}' LIMIT 1;").format(
+                db_name=self.config['MYSQL_DATABASE_DB'],
+                table_name=table_name
+            )
+
+            cursor.execute(query)
+            return cursor.fetchone()
