@@ -9,8 +9,7 @@ class UserModel:
             query = ("SELECT username from users "
                      "where id='{0}'").format(id)
             cursor.execute(query)
-
-        return cursor.fetchone()
+            return cursor.fetchone()
 
     @staticmethod
     def get_user_id_by_name(name):
@@ -18,8 +17,7 @@ class UserModel:
             query = ("SELECT id from users "
                      "where username='{0}'").format(name)
             cursor.execute(query)
-
-        return cursor.fetchone()
+            return cursor.fetchone()
 
     @staticmethod
     def get_user_id_by_name_and_password(name, password):
@@ -28,8 +26,7 @@ class UserModel:
                      "username='{0}' and "
                      "password='{1}'").format(name, password)
             cursor.execute(query)
-
-        return cursor.fetchone()
+            return cursor.fetchone()
 
     @staticmethod
     def create(name, passwd):

@@ -70,3 +70,18 @@ class Database:
 
             cursor.execute(query)
             return cursor.fetchone()
+
+    @classmethod
+    def drop_all_tables(self):
+        with self.connection as cursor:
+            query = ('Select concat'
+                     "('DROP TABLE {db_name}.', table_name,';') "
+                     'from information_schema.TABLES '
+                     "where table_schema='{db_name}';").format(
+                db_name=self.config['MYSQL_DATABASE_DB']
+            )
+
+            cursor.execute(query)
+
+            for query in cursor.fetchall():
+                cursor.execute(query[0])

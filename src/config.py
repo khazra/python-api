@@ -53,3 +53,5 @@ class Test(Base):
     DEBUG = True
     LOG_LEVEL = logging.INFO
     TESTING = True
+    LIVESERVER_PORT = 7001
+    LIVESERVER_TIMEOUT = 10
