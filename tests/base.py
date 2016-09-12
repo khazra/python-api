@@ -18,8 +18,8 @@ class BaseTestCase(TestCase):
     def tearDown(self):
         self.db.drop_all_tables()
 
-    def login(self, username, password):
+    def login(self, username, password, content_type='application/json'):
         return self.client.post('/login', data=json.dumps(dict(
             email=username,
             password=password
-        )), follow_redirects=True, content_type='application/json')
+        )), follow_redirects=True, content_type=content_type)

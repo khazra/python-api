@@ -21,7 +21,9 @@ class Login(Resource):
                 return Response('Please provide username and password', 400)
 
             if self.__credentials_valid(username, password):
-                return auth.generate_auth_token()
+                return Response('Credentials valid', 200, {
+                    'Authentication-Token': auth.generate_auth_token()
+                })
             else:
                 return Response('Wrong authentication data', 403)
 
