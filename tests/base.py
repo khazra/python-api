@@ -19,7 +19,27 @@ class BaseTestCase(TestCase):
         self.db.drop_all_tables()
 
     def login(self, username, password, content_type='application/json'):
-        return self.client.post('/login', data=json.dumps(dict(
+        response = self.client.post('/login', data=json.dumps(dict(
             email=username,
             password=password
         )), follow_redirects=True, content_type=content_type)
+
+        self.auth_token = response.headers.get('Authentication-Token')
+        return response
+
+    def auth_get(self, uri, headers={}):
+        headers.update({
+            'Authentication-Token': self.auth_token
+        })
+        return self.client.get(uri, headers=headers)
+
+    def auth_post(self, uri, headers={}, data={}):
+        headers.update({
+            'Authentication-Token': self.auth_token
+        })
+        return self.client.post(
+            uri,
+            headers=headers,
+            data=json.dumps(data),
+            content_type='application/json'
+        )

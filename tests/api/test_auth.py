@@ -23,7 +23,10 @@ class AuthApiTestCase(BaseTestCase):
 
     def test_auth_token_present(self):
         response = self.login('admin', 'admin')
-        self.assertTrue(response.headers['Authentication-Token'] is not None)
+        self.assertTrue(
+            response.headers.get('Authentication-Token') is not None
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
