@@ -10,9 +10,6 @@ class User(Resource):
     @staticmethod
     @auth.requires_login
     def get(id):
-        if not id:
-            return Response('Specify user id', 400)
-
         username = user.get_username_by_id(id)
 
         try:
@@ -48,8 +45,10 @@ class Users(Resource):
                 app.logger.info('INFO: User already exists: %s', username)
                 return Response('User already exists', 423)
 
-            user.create(username, auth.hash_password(password))
-            return Response('User created', 201)
+            new_user = user.create(username, auth.hash_password(password))
+            return Response('User created', 201, {
+                'User-Id': new_user
+            })
 
         except Exception as e:
             app.logger.error('ERROR: Exception raised: %s', str(e))

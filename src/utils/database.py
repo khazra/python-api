@@ -69,7 +69,9 @@ class Database:
             )
 
             cursor.execute(query)
-            return cursor.fetchone()
+            result = cursor.fetchone()
+
+        return result
 
     @classmethod
     def drop_all_tables(self):
