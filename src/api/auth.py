@@ -2,7 +2,7 @@ from flask import Response, request
 from flask_restful import Resource
 
 from src import app, auth
-from src.model.user import UserModel as user
+from src.model.user import User as user_model
 
 
 class Login(Resource):
@@ -35,7 +35,10 @@ class Login(Resource):
     def __credentials_valid(username, password):
         hashed_password = auth.hash_password(password)
 
-        data = user.get_user_id_by_name_and_password(username, hashed_password)
+        data = user_model.query.filter_by(username=username,
+                                          password=hashed_password)
+
+        app.logger.error('user data: %s', data)
 
         if data is not None:
             return True

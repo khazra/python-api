@@ -5,7 +5,7 @@ from flask_restful import Api
 
 from logging.handlers import RotatingFileHandler
 
-from src.utils.database import Database
+from flask_sqlalchemy import SQLAlchemy
 from src.utils.auth import Auth
 
 
@@ -20,7 +20,7 @@ app_settings = os.getenv(
 app.config.from_object(app_settings)
 
 # connect to db
-db = Database(app)
+db = SQLAlchemy(app)
 
 # init auth utils for generating api tokens etc.
 auth = Auth(app)

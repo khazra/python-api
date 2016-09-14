@@ -3,6 +3,8 @@ import coverage
 import os
 
 from src.app import app
+from src import db
+from src.model.user import User
 
 from flask_script import Manager
 
@@ -51,6 +53,29 @@ def cov():
         return 0
 
     return 1
+
+
+@manager.command
+def create_db_tables():
+    if db.create_all():
+        return 0
+
+    return 1
+
+
+@manager.option('-p', '--password', dest='password')
+def create_admin(password):
+    if not password:
+        password = 'password'
+
+    admin = User('admin', password, True, 'ADMIN')
+    db.session.add(admin)
+
+    if db.session.commit():
+        return 0
+
+    return 1
+
 
 if __name__ == '__main__':
     manager.run()

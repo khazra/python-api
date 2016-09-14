@@ -1,76 +1,27 @@
-from src import app, db
+import datetime
+from src import db, auth
 
 
-class UserModel:
+class User(db.Model):
 
-    @staticmethod
-    def get_username_by_id(id):
-        with db.connection as cursor:
-            query = ("SELECT username from {db_name}.users "
-                     "where id='{id}'").format(
-                id=id,
-                db_name=app.config['MYSQL_DATABASE_DB']
-            )
-            cursor.execute(query)
-            result = cursor.fetchone()
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    username = db.Column(db.String(64), unique=True, nullable=False)
+    password = db.Column(db.String(64), nullable=False)
+    role = db.Column(db.String(16), nullable=False, default='USER')
+    created = db.Column(db.DateTime, nullable=False,
+                        default=datetime.datetime.now())
+    modified = db.Column(db.DateTime,
+                         nullable=False,
+                         default=datetime.datetime.now(),
+                         onupdate=datetime.datetime.now()
+                         )
+    active = db.Column(db.Boolean, nullable=False, default=0)
 
-        return result
+    def __init__(self, username, password, active=False, role='USER'):
+        self.username = username
+        self.password = auth.hash_password(password)
+        self.active = active
+        self.role = role
 
-    @staticmethod
-    def get_user_id_by_name(name):
-        with db.connection as cursor:
-            query = ("SELECT id from {db_name}.users "
-                     "where username='{name}'").format(
-                name=name,
-                db_name=app.config['MYSQL_DATABASE_DB']
-            )
-            cursor.execute(query)
-            result = cursor.fetchone()
-
-        return result
-
-    @staticmethod
-    def get_user_id_by_name_and_password(name, password):
-        with db.connection as cursor:
-            query = ("SELECT id from {db_name}.users where "
-                     "username='{name}' and "
-                     "password='{password}'").format(
-                name=name,
-                password=password,
-                db_name=app.config['MYSQL_DATABASE_DB']
-            )
-            cursor.execute(query)
-            result = cursor.fetchone()
-
-        return result
-
-    @classmethod
-    def create(self, name, passwd):
-        with db.connection as cursor:
-            query = ('insert into {db_name}.users '
-                     "set username = '{user_name}', "
-                     "password = '{user_passwd}';").format(
-                db_name=app.config['MYSQL_DATABASE_DB'],
-                user_name=name,
-                user_passwd=passwd
-            )
-
-            cursor.execute(query)
-
-        return self.__get_last_created()
-
-    @staticmethod
-    def __get_last_created():
-        with db.connection as cursor:
-            query = (
-                'select id from {db_name}.users '
-                'order by id desc '
-                'limit 1;'
-            ).format(
-                db_name=app.config['MYSQL_DATABASE_DB']
-            )
-
-            cursor.execute(query)
-            result = cursor.fetchone()
-
-        return result
+    def __repr__(self):
+        return '<User %r>' % self.username

@@ -1,8 +1,8 @@
 from flask_restful import Resource
 from flask import Response, request
 
-from src import app, auth
-from src.model.user import UserModel as user
+from src import app, auth, db
+from src.model.user import User as user_model
 
 
 class User(Resource):
@@ -10,11 +10,11 @@ class User(Resource):
     @staticmethod
     @auth.requires_login
     def get(id):
-        username = user.get_username_by_id(id)
+        user = user_model.query.filter_by(id=id).first()
 
         try:
-            if username is not None:
-                return Response('User found', 200, {'username': username})
+            if user is not None:
+                return Response('User found', 200, {'username': user.username})
             else:
                 return Response('User not found', 404)
 
@@ -41,13 +41,20 @@ class Users(Resource):
                 'Please provide username and password for user', 400)
 
         try:
-            if user.get_user_id_by_name(username) is not None:
+            user_exists = user_model.query.filter_by(
+                username=username
+            ).first() is not None
+
+            if user_exists:
                 app.logger.info('INFO: User already exists: %s', username)
                 return Response('User already exists', 423)
 
-            new_user = user.create(username, auth.hash_password(password))
+            new_user = user_model(username, password)
+            db.session.add(new_user)
+            db.session.commit()
+
             return Response('User created', 201, {
-                'User-Id': new_user
+                'User-Id': new_user.id
             })
 
         except Exception as e:
