@@ -35,12 +35,10 @@ class Login(Resource):
     def __credentials_valid(username, password):
         hashed_password = auth.hash_password(password)
 
-        data = user_model.query.filter_by(username=username,
-                                          password=hashed_password)
+        valid = user_model.query.filter_by(username=username,
+                                           password=hashed_password).first()
 
-        app.logger.error('user data: %s', data)
-
-        if data is not None:
+        if valid is not None:
             return True
 
         return False

@@ -37,7 +37,6 @@ class TestTestConfig(TestCase):
     def test_app_is_test(self):
         self.assertTrue(app.config['DEBUG'] is True)
         self.assertTrue(app.config['LOG_LEVEL'] is logging.INFO)
-        self.assertTrue(app.config['MYSQL_DATABASE_DB'] is 'python_api_test')
         self.assertFalse(current_app is None)
 
 

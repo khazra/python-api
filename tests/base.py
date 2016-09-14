@@ -4,6 +4,7 @@ from flask_testing import TestCase
 
 from src.app import app
 from src import db
+from src.model.user import User
 
 
 class BaseTestCase(TestCase):
@@ -13,10 +14,14 @@ class BaseTestCase(TestCase):
         return app
 
     def setUp(self):
-        self.db = db
+        db.create_all()
+        admin = User('admin', 'admin', True, 'ADMIN')
+        db.session.add(admin)
+        db.session.commit()
 
     def tearDown(self):
-        self.db.drop_all_tables()
+        db.session.remove()
+        db.drop_all()
 
     def login(self, username, password, content_type='application/json'):
         response = self.client.post('/login', data=json.dumps(dict(
