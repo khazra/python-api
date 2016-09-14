@@ -1,12 +1,14 @@
-**Current version: 0.2**
+**Current version: 0.3**
 
 ***Main Features***
 - Authentication by revoking token v1
 
 ***Smaller Features***
 - Logging to file with RotatingFileHandler
-- Simple database operations with flask-mysql
+- Unit tests with inittest module
+- SQLAlchemy for db operations
 
 ***Available Endpoints***
-- /login
-- /user/{id}
+- POST /login - get auth token
+- GET /user/{id} - get user
+- POST /user - createuser
