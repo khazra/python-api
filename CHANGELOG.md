@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+## [0.3.1]
+### Added
 - running tests from a single module
 - this changelog
 - pip requirements
