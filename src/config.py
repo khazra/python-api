@@ -6,7 +6,7 @@ class Base(object):
     TOKEN_RANDOM_STRING_LENGTH = 16
     TOKEN_VALIDITY_DURATION = 3600
 
-    LOGFILE_PATH = 'src/logs/app.log'
+    LOGFILE_PATH = 'app.log'
     LOGFILE_MAX_BYTES = 10000
     LOGFILE_BACKUP_COUNT = 1
 

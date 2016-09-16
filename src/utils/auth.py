@@ -38,11 +38,7 @@ class Auth:
             choice(ascii_letters) for i in range(
                 self.app.config['TOKEN_RANDOM_STRING_LENGTH']))
 
-        signed = self.signer.sign(token_random_string)
-
-        self.app.logger.info('INFO: Authorized with token %s', signed)
-
-        return signed
+        return self.signer.sign(token_random_string)
 
     @classmethod
     def __is_token_valid(self, authentication_token):
