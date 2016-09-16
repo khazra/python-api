@@ -1,7 +1,7 @@
 import unittest
 
-from base import BaseTestCase
-from flask import current_app as app
+from src.app import app
+from tests.base import BaseTestCase
 from src.utils.auth import Auth
 
 

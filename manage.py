@@ -11,9 +11,13 @@ from flask_script import Manager
 manager = Manager(app)
 
 
-@manager.command
-def test():
-    tests = unittest.TestLoader().discover('tests')
+@manager.option('-m', '--module', dest='module')
+def test(module):
+    if module:
+        tests = unittest.TestLoader().loadTestsFromName(module)
+    else:
+        tests = unittest.TestLoader().discover('tests')
+
     result = unittest.TextTestRunner(verbosity=2).run(tests)
 
     if result.wasSuccessful():
@@ -22,8 +26,8 @@ def test():
     return 1
 
 
-@manager.command
-def cov():
+@manager.option('-m', '--module', dest='module')
+def cov(module):
     """Runs the unit tests with coverage."""
     cov = coverage.Coverage(
         branch=True,
@@ -37,7 +41,11 @@ def cov():
     )
     cov.start()
 
-    tests = unittest.TestLoader().discover('tests')
+    if module:
+        tests = unittest.TestLoader().loadTestsFromName(module)
+    else:
+        tests = unittest.TestLoader().discover('tests')
+
     result = unittest.TextTestRunner(verbosity=2).run(tests)
 
     if result.wasSuccessful():

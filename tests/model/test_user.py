@@ -1,7 +1,7 @@
 import unittest
 import hashlib
 
-from base import BaseTestCase
+from tests.base import BaseTestCase
 from src.model.user import User
 
 
