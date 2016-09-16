@@ -4,6 +4,10 @@
 ### Added
 - running tests from a single module
 - this changelog
+- pip requirements
+
+### Changed
+- log file path
 
 ## 0.3.0
 
