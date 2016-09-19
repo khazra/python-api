@@ -2,7 +2,7 @@
 
 Simple API written in Python language. For usage with SQL databases.
 
-### Current version: 0.3.1
+### Current version: 0.3.2
 
 ### Available Endpoints
 - POST /login - get auth token
