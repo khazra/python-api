@@ -1,4 +1,5 @@
 import unittest
+import json
 
 from tests.base import BaseTestCase
 
@@ -18,13 +19,19 @@ class AuthApiTestCase(BaseTestCase):
         self.assertEqual(response.status, '400 BAD REQUEST')
 
     def test_no_credentials(self):
-        response = self.login(None, None)
+        response = self.client.post(
+            '/login',
+            data=json.dumps({}),
+            follow_redirects=True,
+            content_type='application/json'
+        )
         self.assertEqual(response.status, '400 BAD REQUEST')
 
     def test_auth_token_present(self):
         response = self.login('admin', 'admin')
+        response_data = json.loads(response.data).get('data')
         self.assertTrue(
-            response.headers.get('Authentication-Token') is not None
+            response_data.get('authenticationToken') is not None
         )
 
 

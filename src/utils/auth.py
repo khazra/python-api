@@ -1,10 +1,12 @@
-from flask import request, Response
+from flask import request
 
 from functools import wraps
 from itsdangerous import BadSignature, SignatureExpired, TimestampSigner
 from random import choice
 from string import ascii_letters
 import hashlib
+
+from src.utils.api import response
 
 
 class Auth:
@@ -22,7 +24,10 @@ class Auth:
 
             if not authentication_token or not self.__is_token_valid(
                     authentication_token):
-                return Response('Not authorized', 401)
+                return response(
+                    status=401,
+                    message='Not authorized'
+                )
 
             return f(*args, **kwargs)
 
