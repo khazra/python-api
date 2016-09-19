@@ -1,5 +1,4 @@
 *.pyc
 .venv/
 .tmp/
-src/logs
 app.log

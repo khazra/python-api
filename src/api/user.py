@@ -1,8 +1,8 @@
-from flask_restful import Resource
-from flask import Response, request
+from flask_restful import Resource, reqparse
 
 from src import app, auth, db
 from src.model.user import User as user_model
+from src.utils.api import response
 
 
 class User(Resource):
@@ -12,15 +12,18 @@ class User(Resource):
     def get(id):
         user = user_model.query.filter_by(id=id).first()
 
-        try:
-            if user is not None:
-                return Response('User found', 200, {'username': user.username})
-            else:
-                return Response('User not found', 404)
+        if user is not None:
+            return response(
+                message='User found',
+                status=200,
+                data={'username': user.username}
+            )
 
-        except Exception as e:
-            app.logger.error('ERROR: Exception raised: %s', str(e))
-            return Response('Unknown error', 520)
+        else:
+            return response(
+                status=404,
+                message='User not found'
+            )
 
 
 class Users(Resource):
@@ -28,35 +31,45 @@ class Users(Resource):
     @staticmethod
     @auth.requires_login
     def post():
-        json_body = request.get_json()
+        parser = reqparse.RequestParser()
+        parser.add_argument(
+            'email',
+            type=str,
+            help='no email provided',
+            required=True,
+            location='json'
+        )
+        parser.add_argument(
+            'password',
+            type=str,
+            help='no email provided',
+            required=True,
+            location='json'
+        )
 
-        if not json_body:
-            return Response('Bad content type', 400)
+        args = parser.parse_args()
 
-        username = json_body.get('email')
-        password = json_body.get('password')
+        username = args['email']
+        password = args['password']
 
-        if not username or not password:
-            return Response(
-                'Please provide username and password for user', 400)
+        user_exists = user_model.query.filter_by(
+            username=username
+        ).first() is not None
 
-        try:
-            user_exists = user_model.query.filter_by(
-                username=username
-            ).first() is not None
+        if user_exists:
+            return response(
+                status=423,
+                message='User already exists'
+            )
 
-            if user_exists:
-                app.logger.info('INFO: User already exists: %s', username)
-                return Response('User already exists', 423)
+        new_user = user_model(username, password)
+        db.session.add(new_user)
+        db.session.commit()
 
-            new_user = user_model(username, password)
-            db.session.add(new_user)
-            db.session.commit()
-
-            return Response('User created', 201, {
-                'User-Id': new_user.id
-            })
-
-        except Exception as e:
-            app.logger.error('ERROR: Exception raised: %s', str(e))
-            return Response('Unknown error', 520)
+        return response(
+            status=201,
+            message='User created',
+            data={
+                'userId': new_user.id
+            }
+        )
