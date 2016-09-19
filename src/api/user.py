@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse
 
-from src import app, auth, db
+from src import auth, db
 from src.model.user import User as user_model
 from src.utils.api import response
 

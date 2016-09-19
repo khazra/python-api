@@ -29,7 +29,11 @@ class BaseTestCase(TestCase):
             password=password
         )), follow_redirects=True, content_type=content_type)
 
-        self.auth_token = response.headers.get('Authentication-Token')
+        response_data = json.loads(response.data).get('data')
+
+        if response_data is not None:
+            self.auth_token = response_data.get('authenticationToken')
+
         return response
 
     def auth_get(self, uri, headers={}):

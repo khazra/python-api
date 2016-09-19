@@ -1,4 +1,5 @@
 import unittest
+import json
 
 from tests.base import BaseTestCase
 
@@ -17,8 +18,9 @@ class GetUserTestCase(BaseTestCase):
     def test_get_user(self):
         self.login('admin', 'admin')
         response = self.auth_get('/user/1')
+        response_data = json.loads(response.data).get('data')
         self.assertEqual(response.status, '200 OK')
-        self.assertTrue(response.headers.get('username') is not None)
+        self.assertTrue(response_data.get('username') is not None)
 
 
 class CreateUserTestCase(BaseTestCase):
