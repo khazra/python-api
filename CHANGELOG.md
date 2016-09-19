@@ -4,6 +4,7 @@
 ### Added
 
 ### Changed
+- Flask Response is not used anymore, request response data is returned as JSON
 
 ## [0.3.1]
 ### Added
