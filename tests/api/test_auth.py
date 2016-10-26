@@ -8,15 +8,15 @@ class AuthApiTestCase(BaseTestCase):
 
     def test_valid_credentials(self):
         response = self.login('admin', 'admin')
-        self.assertEqual(response.status, '200 OK')
+        self.assertEqual(response.status, self.response_status(200))
 
     def test_bad_credentials(self):
         response = self.login('user', 'bad_password')
-        self.assertEqual(response.status, '403 FORBIDDEN')
+        self.assertEqual(response.status, self.response_status(403))
 
     def test_bad_content_type(self):
         response = self.login('user', 'bad_password', 'application/bad')
-        self.assertEqual(response.status, '400 BAD REQUEST')
+        self.assertEqual(response.status, self.response_status(400))
 
     def test_no_credentials(self):
         response = self.client.post(
@@ -25,7 +25,7 @@ class AuthApiTestCase(BaseTestCase):
             follow_redirects=True,
             content_type='application/json'
         )
-        self.assertEqual(response.status, '400 BAD REQUEST')
+        self.assertEqual(response.status, self.response_status(400))
 
     def test_auth_token_present(self):
         response = self.login('admin', 'admin')

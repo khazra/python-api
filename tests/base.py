@@ -52,3 +52,16 @@ class BaseTestCase(TestCase):
             data=json.dumps(data),
             content_type='application/json'
         )
+
+    @staticmethod
+    def response_status(status_code):
+        return {
+            200: '200 OK',
+            201: '201 CREATED',
+
+            400: '400 BAD REQUEST',
+            401: '401 UNAUTHORIZED',
+            403: '403 FORBIDDEN',
+            404: '404 NOT FOUND',
+            423: '423 LOCKED',
+        }.get(status_code)
